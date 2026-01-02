@@ -1,10 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Mobile Menu Toggle
-    // Usamos IDs porque son más rápidos y específicos
     const mobileBtn = document.getElementById('menu-toggle');
     const navLinks = document.getElementById('nav-links');
-    const icon = mobileBtn ? mobileBtn.querySelector('i') : null;
 
     if (mobileBtn && navLinks) {
         mobileBtn.addEventListener('click', () => {
@@ -15,23 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Accesibilidad: Actualizar estado
             mobileBtn.setAttribute('aria-expanded', !isExpanded);
-
-            // Cambiar icono
-            if (icon) {
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-times');
-            }
         });
 
-        // Cerrar menú al hacer clic en un enlace (Mejora UX móvil)
+        // Cerrar menú al hacer clic en un enlace
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
                 mobileBtn.setAttribute('aria-expanded', 'false');
-                if (icon) {
-                    icon.classList.add('fa-bars');
-                    icon.classList.remove('fa-times');
-                }
             });
         });
     }
@@ -42,15 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', () => {
             const scrolled = window.scrollY > 50;
             
-            // Ajuste visual para el tema oscuro de EneSushi
             if (scrolled) {
-                navbar.style.background = 'rgba(5, 5, 5, 0.95)'; // Casi negro sólido
+                navbar.style.background = 'rgba(5, 5, 5, 0.95)';
                 navbar.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
-                navbar.style.padding = '10px 0'; // Reducir altura
+                navbar.style.padding = '10px 0';
             } else {
-                navbar.style.background = 'rgba(0, 0, 0, 0.7)'; // Transparente
+                navbar.style.background = 'rgba(0, 0, 0, 0.7)';
                 navbar.style.boxShadow = 'none';
-                navbar.style.padding = '20px 0'; // Altura original
+                navbar.style.padding = '20px 0';
             }
         });
     }
@@ -65,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetElement = document.querySelector(targetId);
 
             if (targetElement) {
-                // Compensación para la barra de navegación fija (70px aprox)
                 const headerOffset = 80; 
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.scrollY - headerOffset;
@@ -79,26 +65,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 4. Scroll Animations (Intersection Observer)
-    // Seleccionamos los elementos que queremos animar
     const animatedElements = document.querySelectorAll('.feature-card, .menu-item, .section-header');
 
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.15 // Se activa cuando el 15% del elemento es visible
+        threshold: 0.15 
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('reveal-visible');
-                observer.unobserve(entry.target); // Dejar de observar una vez animado
+                observer.unobserve(entry.target); 
             }
         });
     }, observerOptions);
 
     animatedElements.forEach(el => {
-        el.classList.add('reveal-hidden'); // Añadimos clase inicial
+        el.classList.add('reveal-hidden');
         observer.observe(el);
     });
 });
